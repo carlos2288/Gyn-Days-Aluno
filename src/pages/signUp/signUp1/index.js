@@ -7,9 +7,17 @@ import logoImg from '../../../assets/logo.png';
 import TextCustom from '../../../utils/fonts';
 import {useNavigation} from '@react-navigation/native';
 import {Button} from 'react-native-elements';
-import {} from '@expo';
+import { memoria } from '../../../utils/memoria';
+import { usuario } from '../../../utils/consts';
+//import {} from '@expo';
 
 export default function SignUp1(){
+const [nome,setNome] = React.useState('')    
+const [email,setEmail] = React.useState('')
+const [senha,setSenha] = React.useState('')
+const [confirmaSenha,setConfirmaSenha] = React.useState('')
+const [endereco,setEndereco] = React.useState('')
+const [contato,setContato] = React.useState('')   
     
     const navigation = useNavigation();
 
@@ -47,8 +55,8 @@ export default function SignUp1(){
                     placeholder='Nome e Sobrenome'
                     placeholderTextColor="#A0A0A0"
                     returnKeyType="next"
-                    
-                    >
+                    onChangeText={text=>{setNome(text)}}
+                    >{nome}
                     </TextInput>
                     <TextCustom style={styles.textInputSignUp}>Email:</TextCustom>
                     <TextInput
@@ -57,7 +65,8 @@ export default function SignUp1(){
                         placeholder='example@email.com'
                         placeholderTextColor="#A0A0A0"
                         returnKeyType="next"
-                        ></TextInput>
+                        onChangeText={text=>{setEmail(text)}}
+                        >{email}</TextInput>
                     <TextCustom style={styles.textInputSignUp}>Senha:</TextCustom>
                     <TextInput
                         textContentType={"password"}
@@ -65,7 +74,8 @@ export default function SignUp1(){
                         placeholder='password'
                         placeholderTextColor="#A0A0A0"
                         returnKeyType="next"
-                        ></TextInput>
+                        onChangeText={text=>{setSenha(text)}}
+                        >{senha}</TextInput>
                     <TextCustom style={styles.textInputSignUp}>Confirmar Senha:</TextCustom>
                     <TextInput
                         textContentType={"password"}
@@ -73,7 +83,8 @@ export default function SignUp1(){
                         placeholder='confirm password'
                         placeholderTextColor="#A0A0A0"
                         returnKeyType="next"
-                        ></TextInput>
+                        onChangeText={text=>{setConfirmaSenha(text)}}
+                        >{confirmaSenha}</TextInput>
                     <TextCustom style={styles.textInputSignUp}>Endereço:</TextCustom>
                     <TextInput
                         textContentType={"fullStreetAddress"}
@@ -82,7 +93,8 @@ export default function SignUp1(){
                         placeholder='Rua, Numero, Bairro'
                         placeholderTextColor="#A0A0A0"
                         returnKeyType="next"
-                        ></TextInput>
+                        onChangeText={text=>setEndereco(text)}
+                        >{endereco}</TextInput>
                     <TextCustom style={styles.textInputSignUp}>Contato:</TextCustom>
                     <TextInput
                         textContentType={"telephoneNumber"}
@@ -90,10 +102,25 @@ export default function SignUp1(){
                         placeholder='55(11)8888-8888'
                         placeholderTextColor="#A0A0A0"
                         returnKeyType="next"
-                        ></TextInput>
+                        onChangeText={text=>setContato(text)}
+                        >{contato}</TextInput>
                     
             </View>
-            <Button onPress={handleToSignUp2} type="clear" title="Continuar"  titleStyle={styles.buttonStyle}/>
+            <Button onPress={()=>{
+                if(senha === confirmaSenha){
+                    memoria(usuario,(user)=>{
+                        user.nome = nome 
+                        user.login = email 
+                        user.senha = senha 
+                        user.endereco = endereco 
+                        user.contato = contato
+                        navigation.navigate('SignUp2')
+                        return user
+                    })
+                }else{
+                    alert('As senhas diferem')
+                }
+            }} type="clear" title="Continuar"  titleStyle={styles.buttonStyle}/>
             <View style={{ height: 1 }} />
             </View>
             

@@ -8,8 +8,12 @@ import TextCustom from '../../../utils/fonts';
 import {useNavigation} from '@react-navigation/native';
 import {Button} from 'react-native-elements';
 import Login from '../../login';
+import { memoria } from '../../../utils/memoria';
+import { usuario } from '../../../utils/consts';
 
 export default function SignUp1(){
+
+    const [objetivo,setObjetivo] = React.useState('')
     
     const navigation = useNavigation();
 
@@ -47,8 +51,8 @@ export default function SignUp1(){
                     placeholder='Objetivo'
                     placeholderTextColor="#A0A0A0"
                     returnKeyType="next"
-                    
-                    >
+                    onChangeText={text=>{setObjetivo(text)}}
+                    >{objetivo}
                     </TextInput>
 
                     {/* Lugar para por pick number de 1 a até 7 dias por semana */}
@@ -63,7 +67,12 @@ export default function SignUp1(){
                     
                     
             </View>
-            <Button onPress={handleToLogin} type="clear" title="Continuar"  titleStyle={styles.buttonStyle}/>
+            <Button onPress={()=>{
+                memoria(usuario,(user)=>{
+                    user.objetivo = objetivo
+                    return user
+                })
+            }} type="clear" title="Continuar"  titleStyle={styles.buttonStyle}/>
             <View style={{ height: 1 }} />
             </View>
             
